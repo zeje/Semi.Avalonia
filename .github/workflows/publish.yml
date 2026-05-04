@@ -27,11 +27,11 @@ on:
         description: 'DRM Linux x64 AOT'
         default: false
         type: boolean
-      osx-arm64:
+      osx-x64:
         description: 'macOS arm64'
         default: false
         type: boolean
-      osx-arm64-aot:
+      osx-x64-aot:
         description: 'macOS arm64 AOT'
         default: false
         type: boolean
@@ -59,10 +59,10 @@ on:
       drm-linux-x64-aot:
         type: boolean
         default: true
-      osx-arm64:
+      osx-x64:
         type: boolean
         default: true
-      osx-arm64-aot:
+      osx-x64-aot:
         type: boolean
         default: true
       android-arm64:
@@ -172,36 +172,36 @@ jobs:
             publish
             !publish/*.pdb
 
-  osx-arm64:
-    if: ${{inputs.osx-arm64}}
+  osx-x64:
+    if: ${{inputs.osx-x64}}
     runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Publish osx-arm64
-        run: dotnet publish demo/Semi.Avalonia.Demo.Desktop -r osx-arm64 -c Release -o publish --sc /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
+      - name: Publish osx-x64
+        run: dotnet publish demo/Semi.Avalonia.Demo.Desktop -r osx-x64 -c Release -o publish --sc /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: Semi.Avalonia.Demo.Desktop.osx-arm64
+          name: Semi.Avalonia.Demo.Desktop.osx-x64
           path: |
             publish
             !publish/*.pdb
 
-  osx-arm64-aot:
-    if: ${{inputs.osx-arm64-aot}}
+  osx-x64-aot:
+    if: ${{inputs.osx-x64-aot}}
     runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Enable Native AOT in .csproj
         run: sed -i '' 's#<!--<PublishAot>true</PublishAot>-->#<PublishAot>true</PublishAot>#' demo/Semi.Avalonia.Demo.Desktop/Semi.Avalonia.Demo.Desktop.csproj
-      - name: Publish osx-arm64 AOT
-        run: dotnet publish demo/Semi.Avalonia.Demo.Desktop -r osx-arm64 -c Release -o publish
+      - name: Publish osx-x64 AOT
+        run: dotnet publish demo/Semi.Avalonia.Demo.Desktop -r osx-x64 -c Release -o publish
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: Semi.Avalonia.Demo.Desktop.osx-arm64.NativeAOT
+          name: Semi.Avalonia.Demo.Desktop.osx-x64.NativeAOT
           path: |
             publish
             !publish/*.pdb
